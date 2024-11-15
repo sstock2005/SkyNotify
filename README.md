@@ -60,6 +60,10 @@ python bot.py
 - `/help` - Displays available commands
 - `/track <username>` - Adds a Minecraft username to your tracking list
 
+## Todo
+- Add `/remove <username>` - Removes the Minecraft username from your tracking list
+- Add `/list` - Lists the Minecraft username from your tracking list
+
 ## Directory Structure
 
 The bot automatically creates these directories if they don't exist:
