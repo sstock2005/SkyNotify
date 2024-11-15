@@ -238,6 +238,7 @@ client = SkyNotifier(intents=intents)
 
 @client.event
 async def on_ready():
+    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Hypixel API"))
     print(f"[#] {client.user} (ID: {client.user.id}) ONLINE")
 
 @client.tree.command()
@@ -271,15 +272,9 @@ async def track(interaction: discord.Interaction, username: str):
 
     await interaction.response.send_message(f"Added {username} to your tracking list!", ephemeral=True)
 
-async def main_test():
-    players = [await uuid("TimeCandy")]
-
-    await update(players, api_token)
-
 if __name__ == '__main__':
     try:
         client.run(discord_token)
-        # asyncio.run(main_test())
 
     except KeyboardInterrupt:
         client.loop.run_until_complete(client.close())
