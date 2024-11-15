@@ -230,9 +230,7 @@ class SkyNotifier(discord.Client):
             self.u_task.cancel()
         await super().close()
 
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
+intents = discord.Intents.all()
 
 client = SkyNotifier(intents=intents)
 
