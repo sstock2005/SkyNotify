@@ -14,13 +14,16 @@ A Discord bot that tracks Hypixel Skyblock auction sales and notifies users via 
 - Simple command interface
 - Background monitoring system
 
+## Installation
+[Add the bot with this link!](https://sstock.dev/skynotify)  
+
 ## Prerequisites
 
 - Python 3.7+
 - [Discord Bot Token](https://discord.com/developers/applications)
 - [Hypixel API Key](https://developer.hypixel.net/)
 
-## Installation
+## Self-Host Installation
 
 1. Clone the repository:
 ```bash
