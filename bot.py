@@ -96,52 +96,49 @@ async def update(players, api_token):
                 continue
 
             # Fetch auction data
-            async with session.get(
-                f"https://api.hypixel.net/v2/skyblock/auction?player={player}",
-                headers={"API-Key": api_token}
-            ) as response:
-                json = await response.json()
-        
-        player_auctions = []
-
-        for auction in json["auctions"]:
-            uuid = auction["uuid"]
-            claimed = auction["claimed"]
-
-            player_auctions.append(f"{uuid}:{claimed}")
-
-        if os.path.isfile(f"./player_data/{player}.data") == False:
-            with open(f"./player_data/{player}.data", "w") as f:
-                for b in player_auctions:
-                    f.write(b + "\n")
-        else:
-            saved_auction_list = []
-            with open(f"./player_data/{player}.data", "r") as f:
-                saved_auctions = f.readlines()
+            async with session.get(f"https://api.hypixel.net/v2/skyblock/auction?player={player}",headers={"API-Key": api_token}) as response:
+                data = await response.json()
                 
-                for saved_auction in saved_auctions:
-                    saved_auction_list.append(saved_auction.strip())
+            player_auctions = []
 
-            updated_saved_auction_list = []
-            for new in player_auctions:
-                new_uuid = new.split(":")[0]
-                new_claimed = new.split(":")[1]
+            for auction in data["auctions"]:
+                uuid = auction["uuid"]
+                claimed = auction["claimed"]
 
-                for old in saved_auction_list:
+                player_auctions.append(f"{uuid}:{claimed}")
 
-                    old_uuid = old.split(":")[0]
-                    old_claimed = old.split(":")[1]
+            if os.path.isfile(f"./player_data/{player}.data") == False:
+                with open(f"./player_data/{player}.data", "w") as f:
+                    for b in player_auctions:
+                        f.write(b + "\n")
+            else:
+                saved_auction_list = []
+                with open(f"./player_data/{player}.data", "r") as f:
+                    saved_auctions = f.readlines()
+                    
+                    for saved_auction in saved_auctions:
+                        saved_auction_list.append(saved_auction.strip())
 
-                    if new_uuid == old_uuid:
-                        if old_claimed != new_claimed:
-                            await client.notify(player, new_uuid)
-                        else:
-                            updated_saved_auction_list.append(f"{new_uuid}:{new_claimed}")
-                        break
-            
-            with open(f"./player_data/{player}.data", 'w') as f:
-                for u in updated_saved_auction_list:
-                    f.write(u + '\n')
+                updated_saved_auction_list = []
+                for new in player_auctions:
+                    new_uuid = new.split(":")[0]
+                    new_claimed = new.split(":")[1]
+
+                    for old in saved_auction_list:
+
+                        old_uuid = old.split(":")[0]
+                        old_claimed = old.split(":")[1]
+
+                        if new_uuid == old_uuid:
+                            if old_claimed != new_claimed:
+                                await client.notify(player, new_uuid)
+                            else:
+                                updated_saved_auction_list.append(f"{new_uuid}:{new_claimed}")
+                            break
+                
+                with open(f"./player_data/{player}.data", 'w') as f:
+                    for u in updated_saved_auction_list:
+                        f.write(u + '\n')
 
 async def get_auction_info(auction_uuid):
     async with aiohttp.ClientSession() as session:
@@ -182,7 +179,7 @@ class SkyNotifier(discord.Client):
 
         while self.should_run:
             try:
-                print("[#] Background Task Started!")
+                logger.info("[#] Background Task Started!")
 
                 players = []
 
@@ -210,7 +207,6 @@ class SkyNotifier(discord.Client):
             lines = f.readlines()
         
         for line in lines:
-            print(f"[DEBUG] player = {line}")
             user = await client.fetch_user(int(line.strip()))
             if user == None:
                 logger.error(f"Could not find user {user}")
@@ -264,7 +260,7 @@ async def track(interaction: discord.Interaction, username: str):
         await interaction.response.send_message("Could not find a minecraft player with that username!", ephemeral=True)
         return
     
-    print(f"User {discord_user} added {username} to tracking")
+    logger.info(f"User {discord_user} added {username} to tracking")
 
     if os.path.isfile(f"./discord_data/{minecraft_user}.data") == False:
         with open(f"./discord_data/{minecraft_user}.data", "w") as f:
