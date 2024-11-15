@@ -1,74 +1,79 @@
 # SkyNotify
 
-SkyNotify is a Python script that monitors Hypixel Skyblock player auctions and notifies a Discord channel when an item is sold. The script uses the Hypixel API and posts updates to a specified Discord webhook, making it easy for players to track their auctions in real-time. Currently, users can specify the usernames they wish to track, and notifications will be automatically sent to Discord. In future updates, SkyNotify aims to become a fully functional Discord bot for easier interaction.
+A Discord bot that tracks Hypixel Skyblock auction sales and notifies users via DM when their tracked players complete an auction.
 
 ## Features
 
-- Tracks Hypixel Skyblock auctions for specified players.
-- Sends a notification to a Discord webhook when an item is sold.
-- Easy-to-use configuration with a simple `config.secret` file.
+- Track specific Minecraft players' auction activities
+- Receive real-time Discord DM notifications when tracked players sell items
+- Detailed auction information including:
+  - Item name
+  - Final bid amount
+  - Auction ID
+  - Direct link to auction details
+- Simple command interface
+- Background monitoring system
+
+## Prerequisites
+
+- Python 3.7+
+- [Discord Bot Token](https://discord.com/developers/applications)
+- [Hypixel API Key](https://developer.hypixel.net/)
 
 ## Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/skynotify.git
+cd skynotify
+```
 
-   ```bash
-   git clone https://github.com/sstock2005/SkyNotify.git
-   cd SkyNotify
-   ```
+2. Install required packages:
+```bash
+pip install -r requirements.txt
+```
 
-2. **Install the required Python packages:**
+3. Edit `config.secret.example` file with your API tokens and save it as `config.secret`:
+```ini
+[API]
+TOKEN=https://developer.hypixel.net/
 
-   Make sure you have [Python](https://www.python.org/downloads/) installed. Install the requirements with:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure the API Token and Discord Webhook:**
-
-   Create a `config.secret` file in the project directory and add your Hypixel API token and Discord webhook URL as follows:
-
-   ```ini
-   [API]
-   TOKEN=your_hypixel_api_token
-
-   [DISCORD]
-   WEBHOOK=your_discord_webhook_url
-   ```
-
-4. **Add the Usernames to Track:**
-
-   Open the main script (e.g., `SkyNotify.py`) and add the Minecraft usernames of players you want to track on **line 119**:
-
-   ```python
-   players = [uuid("USERNAME_HERE")]
-   ```
+[DISCORD]
+TOKEN=https://discord.com/developers/applications
+ADMIN=https://support.discord.com/hc/en-us/articles/4407571667351-How-to-Find-User-IDs-for-Law-Enforcement
+```
 
 ## Usage
 
-To start tracking auctions and sending notifications:
+### Starting the Bot
 
+Run the script:
 ```bash
-python SkyNotify.py
+python bot.py
 ```
 
-The script will run continuously, checking for auction updates every 5 minutes. Each time an item is sold, a message will be sent to your Discord channel via the specified webhook.
+### Commands
 
-## Logging
+- `/help` - Displays available commands
+- `/track <username>` - Adds a Minecraft username to your tracking list
 
-SkyNotify creates log files to store errors and other information, which can be helpful for debugging. Logs are stored in the `logs/` directory.
+## Directory Structure
 
-## Future Plans
-
-- Implementing SkyNotify as a Discord bot for easier setup and management.
-- Allowing dynamic addition/removal of usernames to track without modifying the code.
-- Improved auction data tracking and analytics.
+The bot automatically creates these directories if they don't exist:
+- `./logs/` - Contains bot operation logs
+- `./player_data/` - Stores auction data for tracked players
+- `./discord_data/` - Maintains user tracking preferences
 
 ## Contributing
 
-Feel free to submit issues or pull requests to help improve SkyNotify. Your contributions are welcome!
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+[LICENSE](LICENSE)
+
+## Acknowledgments
+
+- Uses the Hypixel API for auction data
+- Built with discord.py
+- Auction links provided by CoflNet's Sky.Coflnet.com
